@@ -33,13 +33,12 @@ const AnswerForm: React.FC<AnswersProps> = ({ answersData }) => {
         is_true: false,
       },
     ]);
-    //setInputFieldsAnswer(values);
   };
 
   const handleInputChange = (index: number, event: any) => {
     const values = [...inputFieldsAnswer];
     const { name, value, checked } = event.target;
-    if(value){
+
     const newInputFields = inputFieldsAnswer.map((inputField, id) => {
       if (index == id) {
         return {
@@ -49,8 +48,6 @@ const AnswerForm: React.FC<AnswersProps> = ({ answersData }) => {
       } else return inputField;
     });
     setInputFieldsAnswer(newInputFields);
-    }
-  
   };
 
   useEffect(() => {

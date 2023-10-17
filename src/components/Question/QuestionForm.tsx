@@ -11,7 +11,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ handleQuestionsData }) => {
   const [inputFieldsQuestion, setInputFieldsQuestion] = useState<
     QuestionType[]
   >([]);
-  
+
   const [answersData, setAnswersData] = useState();
 
   const handleAddFields = () => {
@@ -28,12 +28,12 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ handleQuestionsData }) => {
         text: "",
       },
     ]);
-    //setInputFieldsQuestion(values);
+
   };
 
   const handleInputChange = (index: number, event: any) => {
     const { value } = event.target;
-    if (value) {
+ 
       const newInputFields = inputFieldsQuestion.map((inputField, id) => {
         if (index == id) {
           return {
@@ -43,10 +43,11 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ handleQuestionsData }) => {
         } else return inputField;
       });
       setInputFieldsQuestion(newInputFields);
-    }
+   
   };
 
   const handleAnswersData = (data: any) => {
+
     setAnswersData(data);
   };
 
