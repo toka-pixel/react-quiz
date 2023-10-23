@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { QuestionsAnswersType } from "../../shared/QuestionsAnswers.type";
-import { Typography, Button, Box, Snackbar } from "@mui/material";
+import { Typography, Button, Box, Snackbar, Alert } from "@mui/material";
 
 type QuestionProps = {
   currentQuestion: number;
@@ -16,18 +16,18 @@ const Question: React.FC<QuestionProps> = ({
   const [selected, setSelected] = useState<string>("");
   const [correctAnswer, setCorrectAnswer] = useState<string>("");
 
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const handleNext = () => {
     if (selected) {
       setCurrentQuestion((prev: number) => ++prev);
       setSelected("");
     } else {
-      <Snackbar
-        // anchorOrigin={{ vertical, horizontal }}
-        open={true}
-        onClose={() => {}}
-        message="I love snacks"
-        // key={vertical + horizontal}
-      />;
+      if (currentQuestion < questions?.length) setOpen(true);
     }
   };
 
@@ -44,18 +44,19 @@ const Question: React.FC<QuestionProps> = ({
   };
 
   return (
-    <Box>
+    <Box >
       <Typography variant="h4">{questions[currentQuestion]?.text}</Typography>
       <br />
       {questions[currentQuestion]?.answers.map((answer, index) => (
         <Button
           variant="outlined"
           key={index}
-          className={`answer ${
+          className={` ${
             selected && handleSelect(answer.text, answer.is_true)
           }`}
           onClick={() => handleCheck(answer.text, answer.is_true)}
           disabled={selected ? true : false}
+          sx={{ marginBottom: "20px", width: "100%", display: "block" }}
         >
           {answer.text}
         </Button>
@@ -77,6 +78,19 @@ const Question: React.FC<QuestionProps> = ({
       >
         {currentQuestion < questions?.length ? "Next" : "Submit"}
       </Button>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+          please , select answer!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

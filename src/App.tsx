@@ -1,6 +1,5 @@
 import "./App.css";
 import { BrowserRouter as Router } from "react-router-dom";
-import { Typography } from "@mui/material";
 import RoutesApp from "./routes/routes";
 
 function App() {

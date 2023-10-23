@@ -1,27 +1,38 @@
 import { Button, TextField, Typography } from "@mui/material";
 import { ChangeEvent, useState } from "react";
 import QuestionForm from "../Question/QuestionForm";
+import { QuizType } from "../../shared/Quiz.type";
+import { addQuiz } from "../../store/quizSlice";
+import { useAppDispatch } from "../../hooks/storeIndex";
+import { InitialQuizObj } from "./InitialQuizObj";
+import { useNavigate } from "react-router-dom";
 
 const QuizForm = () => {
-  const [data, setData] = useState<any>({});
+  const [formData, setFormData] = useState<QuizType>(InitialQuizObj);
+
+  const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
 
   const handleData = (e: ChangeEvent<HTMLInputElement>) => {
-    setData({
-      ...data,
+    setFormData({
+      ...formData,
       [e.target.name]: e.target.value,
-      id:Math.random()
+      id: Math.floor(Math.random() * 10),
     });
   };
 
-  const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
+  const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    dispatch(addQuiz(formData));
+    navigate("/");
   };
 
   return (
     <div>
       <Typography variant="h4">Add New Quiz</Typography>
       <br />
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmitForm}>
         <TextField
           required
           label="Title"
@@ -29,6 +40,7 @@ const QuizForm = () => {
           name="title"
           placeholder="quiz title"
           sx={{ width: "100%", marginBottom: "15px" }}
+          value={formData.title}
           onChange={handleData}
         />
 
@@ -42,6 +54,7 @@ const QuizForm = () => {
           multiline
           minRows={5}
           onChange={handleData}
+          value={formData.description}
         />
         <TextField
           required
@@ -50,12 +63,13 @@ const QuizForm = () => {
           name="url"
           placeholder="video url"
           sx={{ width: "100%", marginBottom: "15px" }}
+          value={formData.url}
           onChange={handleData}
         />
 
-        <QuestionForm handleQuestionsData={(data:any)=>{console.log(data)}} />
+        <QuestionForm setFormData={setFormData} formData={formData} />
 
-        <Button type="submit" variant="contained" style={{width:'100%'}}>
+        <Button type="submit" variant="contained" style={{ width: "100%" }}>
           Submit
         </Button>
       </form>

@@ -1,7 +1,7 @@
 
 
 export type AnswerType = {
-  id: null;
+  id: number | null;
   is_true: boolean;
   text: string;
 };

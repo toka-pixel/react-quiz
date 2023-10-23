@@ -5,57 +5,98 @@ import {
   FormControlLabel,
   TextField,
 } from "@mui/material";
-import { useEffect, useState } from "react";
 import { AnswerType } from "../../shared/Answer.type";
+import { QuizType } from "../../shared/Quiz.type";
 
 type AnswersProps = {
-  answersData: Function;
+  setFormData: Function;
+  formData: QuizType;
+  currentQuestion: number;
 };
 
-const AnswerModel = {
-  id: null,
-  is_true: false,
-  text: "",
-};
-
-const AnswerForm: React.FC<AnswersProps> = ({ answersData }) => {
-  const [inputFieldsAnswer, setInputFieldsAnswer] = useState<AnswerType[]>([
-    AnswerModel,
-  ]);
-
+const AnswerForm: React.FC<AnswersProps> = ({
+  setFormData,
+  formData,
+  currentQuestion,
+}) => {
   const handleAddFields = () => {
-    const values = [...inputFieldsAnswer];
-    setInputFieldsAnswer((prev) => [
-      ...prev,
-      {
-        text: "",
-        id: null,
-        is_true: false,
-      },
-    ]);
+    setFormData((prevData: QuizType) => {
+      const updatedAnswers = [
+        ...prevData.questions_answers[currentQuestion].answers,
+        {
+          text: "",
+          id: 0,
+          is_true: false,
+        },
+      ];
+
+      const updatedQuestionsAnswers = [...prevData.questions_answers];
+      updatedQuestionsAnswers[currentQuestion] = {
+        ...updatedQuestionsAnswers[currentQuestion],
+        answers: updatedAnswers,
+      };
+      return {
+        ...prevData,
+        questions_answers: updatedQuestionsAnswers,
+      };
+    });
   };
 
-  const handleInputChange = (index: number, event: any) => {
-    const values = [...inputFieldsAnswer];
+  const handleChangeAnswer = (answerIndex: number, event: any) => {
     const { name, value, checked } = event.target;
 
-    const newInputFields = inputFieldsAnswer.map((inputField, id) => {
-      if (index == id) {
-        return {
-          ...inputField,
-          [name]: name === "text" ? value : checked,
-        };
-      } else return inputField;
+    setFormData((prevData: QuizType) => {
+      const updatedAnswers = [
+        ...prevData.questions_answers[currentQuestion].answers,
+      ];
+      updatedAnswers[answerIndex] = {
+        ...updatedAnswers[answerIndex],
+        [name]: name === "text" ? value : checked,
+      };
+      const updatedQuestionsAnswers = [...prevData.questions_answers];
+      updatedQuestionsAnswers[currentQuestion] = {
+        ...updatedQuestionsAnswers[currentQuestion],
+        answers: updatedAnswers,
+      };
+      return {
+        ...prevData,
+        questions_answers: updatedQuestionsAnswers,
+      };
     });
-    setInputFieldsAnswer(newInputFields);
   };
-
-  useEffect(() => {
-    answersData(inputFieldsAnswer);
-  }, [inputFieldsAnswer]);
 
   return (
     <div>
+      {formData?.questions_answers[currentQuestion]?.answers.map(
+        (inputField: AnswerType, index: number) => (
+          <Box
+            key={index}
+            sx={{ display: "flex", justifyContent: "space-between" }}
+          >
+            <TextField
+              required
+              label="Answer Name"
+              defaultValue=""
+              name="text"
+              placeholder="Answer Name"
+              sx={{ width: "80%", marginBottom: "15px", marginRight: "10px" }}
+              value={inputField.text}
+              onChange={(event) => handleChangeAnswer(index, event)}
+            />
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value={inputField.is_true}
+                  name="is_true"
+                  onChange={(event) => handleChangeAnswer(index, event)}
+                />
+              }
+              label="is true"
+            />
+          </Box>
+        )
+      )}
       <Button
         variant="outlined"
         type="button"
@@ -64,34 +105,6 @@ const AnswerForm: React.FC<AnswersProps> = ({ answersData }) => {
       >
         + Add Answer
       </Button>
-      {inputFieldsAnswer.map((inputField, index) => (
-        <Box
-          key={index}
-          sx={{ display: "flex", justifyContent: "space-between" }}
-        >
-          <TextField
-            required
-            label="Answer Name"
-            defaultValue=""
-            name="text"
-            placeholder="Answer Name"
-            sx={{ width: "80%", marginBottom: "15px", marginRight: "10px" }}
-            value={inputField.text}
-            onChange={(event) => handleInputChange(index, event)}
-          />
-
-          <FormControlLabel
-            control={
-              <Checkbox
-                value={inputField.is_true}
-                name="is_true"
-                onChange={(event) => handleInputChange(index, event)}
-              />
-            }
-            label="is true"
-          />
-        </Box>
-      ))}
     </div>
   );
 };

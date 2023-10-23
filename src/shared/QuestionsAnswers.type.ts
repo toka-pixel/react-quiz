@@ -1,12 +1,12 @@
 export type QuestionsAnswersType = {
-  answer_id: null;
+  answer_id: number | null,
   answers: {
-    id: number;
+    id: number | null;
     is_true: boolean;
     text: string;
-  }[];
-  feedback_false: string;
-  feedback_true: string;
-  id: number;
+  }[],
+  feedback_false: string,
+  feedback_true: string,
+  id: number ,
   text: string;
 }[];

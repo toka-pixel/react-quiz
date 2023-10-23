@@ -19,14 +19,19 @@ const Quiz = () => {
 
   return (
     <div>
-      <Typography variant="h2" color="">
-        {quiz?.title}
-      </Typography>
-      <Question
-        currentQuestion={currentQuestion}
-        setCurrentQuestion={setCurrentQuestion}
-        questions={quiz?.questions_answers as QuestionsAnswersType}
-      />
+      {quiz && (
+        <>
+          <Typography variant="h2" color="">
+            {quiz?.title}
+          </Typography>
+
+          <Question
+            currentQuestion={currentQuestion}
+            setCurrentQuestion={setCurrentQuestion}
+            questions={quiz?.questions_answers as QuestionsAnswersType}
+          />
+        </>
+      )}
     </div>
   );
 };

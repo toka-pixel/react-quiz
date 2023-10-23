@@ -1,10 +1,10 @@
 import { AnswerType } from "./Answer.type";
 
 export type QuestionType = {
-  answer_id: null;
-  answers: AnswerType | any;
+  answer_id: number | null;
+  answers: Array<AnswerType> ;
   feedback_false: string;
   feedback_true: string,
-  id: null;
+  id: number | null;
   text: string;
 };

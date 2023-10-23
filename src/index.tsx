@@ -4,8 +4,9 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import store from "./store/index";
-import {Provider} from 'react-redux';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Provider } from "react-redux";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { blue } from "@mui/material/colors";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -13,18 +14,21 @@ const root = ReactDOM.createRoot(
 
 const darkTheme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: "dark",
+    primary: {
+      main: blue[200],
+    },
   },
+
 });
 
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <ThemeProvider theme={darkTheme}>
-      <App />
+        <App />
       </ThemeProvider>
     </Provider>
-
   </React.StrictMode>
 );
 
