@@ -69,7 +69,7 @@ const QuizForm = () => {
 
         <QuestionForm setFormData={setFormData} formData={formData} />
 
-        <Button type="submit" variant="contained" style={{ width: "100%" }}>
+        <Button role="button" type="submit" variant="contained" style={{ width: "100%" }}>
           Submit
         </Button>
       </form>

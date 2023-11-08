@@ -13,7 +13,7 @@ const Quiz = () => {
 
   const quiz = useAppSelector((state) =>
     state.quiz.quizList.find(
-      (quiz: QuizType) => quiz.id == parseInt(id as string)
+      (quiz: QuizType) => quiz.id === parseInt(id as string)
     )
   );
 
